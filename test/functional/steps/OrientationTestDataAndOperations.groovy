@@ -47,6 +47,24 @@ class OrientationTestDataAndOperations {
         createOrientationAux(cont, tituloTese, member, tipo)
     }
 
+    static public void createOrientationLeader(String tituloTese, String leader) {
+
+        def cont = new OrientationController()
+        def memberCreater = new Member(members[0])
+        memberCreater.create()
+        memberCreater.save()
+        def member = Member.findByName(memberCreater.name)
+        createOrientationAuxLeader(cont, tituloTese, member, leader)
+    }
+
+    private static void createOrientationAuxLeader(OrientationController cont, String tituloTese, Member member, String leader) {
+        cont.params << [tipo: "Mestrado", orientando: leader, tituloTese: tituloTese, anoPublicacao: 2013, instituicao: "UFPE", orientador: member]
+        cont.request.setContent(new byte[1000]) // Could also vary the request content.
+        cont.create()
+        cont.save()
+        cont.response.reset()
+    }
+
     private static void createOrientationAux(OrientationController cont, String tituloTese, Member member, String tipo) {
         cont.params << [tipo: tipo, orientando: "Tomaz", tituloTese: tituloTese, anoPublicacao: 2013, instituicao: "UFPE", orientador: member]
         cont.request.setContent(new byte[1000]) // Could also vary the request content.
@@ -74,6 +92,13 @@ class OrientationTestDataAndOperations {
         def cont = new OrientationController()
         cont.params << [id: testOrientation.id]
         cont.delete()
+    }
+
+    static public boolean containsOrientation(title, orientations) {
+        def testorientation = Orientation.findByTituloTese(title)
+        def cont = new OrientationController()
+        def result = cont.list().orientationInstanceList
+        return result.contains(testorientation)
     }
 
     static public boolean OrientationCompatibleTo(orientation, title) {

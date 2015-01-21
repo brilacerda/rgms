@@ -40,7 +40,7 @@ class Orientation {
 
     static public def isFiltered(orientations,supervised, tipo) {
         for (orientation in orientations) {
-            if(!(orientation.orientador).contains(supervised))
+            if(!(orientation.orientando).contains(supervised))
                 return false
         }
         return true

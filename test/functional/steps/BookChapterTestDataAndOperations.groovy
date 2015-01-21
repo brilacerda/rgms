@@ -54,7 +54,8 @@ class BookChapterTestDataAndOperations {
 
     static public void createBookChapter(String title, String filename) {
         def cont = new BookChapterController()
-        cont.params << findBookChapterByTitle(title) << [file: filename]
+        cont.params << [title: title, publicationDate: (new Date("12 October 2012")),
+                        publisher: "Person", chapter: 1, file: filename]
         cont.request.setContent(new byte[1000])
         cont.create()
         cont.save()

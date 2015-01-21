@@ -52,6 +52,22 @@ class BookChapterPage extends Page {
         assert bookChapterColumns.size() == 0
     }
 
+    def checkFilteredByTitle(tipo){
+        def listDiv = $('div', id: 'list-bookChapter')
+        def bookChapterTable = (listDiv.find('table'))[0]
+        def bookChapterRows = bookChapterTable.find('tbody').find('tr')
+        for (row in bookChapterRows) {
+            def bookChapterColumns = row.find('td')
+            if(!bookChapterColumns[0].text().contains(tipo))
+                return false
+        }
+        return true
+    }
+
+    def selectViewBookChapter(String title) {
+        $("a", text: title).click()
+    }
+
     def hasErrorUploadFile() {
         GetPageTitle gp = new GetPageTitle()
         return gp.msg('file.already.exist.message') == $("div", class: "message", role: "status").text()

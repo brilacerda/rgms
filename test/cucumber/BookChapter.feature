@@ -73,14 +73,13 @@ Feature: BookChapter
     Then I'm still on book chapter page
     And the book chapters are not stored by the system
 
-  Scenario: filter existing book chapter by title
+  Scenario: order by existing book chapter by title
     Given the system has some book chapter entitled by "Next Generation Software Product Line Engineering"
     When the system filter the book chapter entitled by title "Next Generation Software Product Line Engineering"
     Then the system book chapter list content is not modified
 
-  Scenario: filter existing book chapter by title web
+  Scenario: order by existing book chapter by title web
     Given I am at the book chapter page
     And I create some book chapter entitled by "Next Generation Software Product Line Engineering"
     When I select to view the list of book chapters
-    And I select to filter the list of book chapter by title "Next Generation Software Product Line Engineering"
     Then my book chapter list shows only the book chapters entitled by "Next Generation Software Product Line Engineering"

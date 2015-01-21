@@ -20,6 +20,10 @@ class BookChapterCreatePage extends FormPage {
         }
     }
 
+    def fillBookChapterDetails(){
+        fillBookChapterDetails("","")
+    }
+
     def fillBookChapterDetails(title, filename){
         fillTitle(title)
         $("form").publisher = "Person"

@@ -36,6 +36,32 @@ class OrientationCreatePage extends Page {
         $("form").curso = "Ciencia da Computacao"
     }
 
+    def fillOrientationDetailsWithOrientando(){
+        fillOrientationDetailsWithOrientando("The Book is on the table","Tomaz")
+    }
+
+    def fillOrientationDetailsWithOrientando(title, orientando){
+        $("form").tipo = "Mestrado"
+        $("form").orientando = orientando
+        $("form").tituloTese = title
+        $("form").anoPublicacao = 2013
+        $("form").instituicao = "UFPE"
+        $("form").curso = "Ciencia da Computacao"
+    }
+
+    def fillOrientationDetailsWithTipo(){
+        fillOrientationDetailsWithTipo("The Book is on the table","Mestrado")
+    }
+
+    def fillOrientationDetailsWithTipo(title, tipo){
+        $("form").tipo = tipo
+        $("form").orientando = "Tomaz"
+        $("form").tituloTese = title
+        $("form").anoPublicacao = 2013
+        $("form").instituicao = "UFPE"
+        $("form").curso = "Ciencia da Computacao"
+    }
+
     def selectCreateOrientation() {
         //$("input", name: "create").click()
         $("input", name: "create", class: "save").click()

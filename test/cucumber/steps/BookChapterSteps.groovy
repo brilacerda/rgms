@@ -61,18 +61,16 @@ Given(~'^I am at the book chapter page$') { ->
 }
 
 And(~'^I create some book chapter entitled by "([^"]*)"$'){String title ->
-    at BookChapterPage
     page.selectNewBookChapter()
     at BookChapterCreatePage
-    page.fillArticleDetails(BookChapterTestDataAndOperations.path() + 'A.pdf', title)
+    page.fillBookChapterDetails(title, BookChapterTestDataAndOperations.path() + 'A.pdf')
     page.selectCreateBookChapter()
-    assert !bookChapterNoExist(title)
+
     to BookChapterPage
     page.selectNewBookChapter()
     at BookChapterCreatePage
-    page.fillArticleDetails(BookChapterTestDataAndOperations.path() + 'A.pdf', 'Refinement of Concurrent Object Oriented Programs')
+    page.fillBookChapterDetails('Artificial Neural Networks', BookChapterTestDataAndOperations.path() + 'B.pdf')
     page.selectCreateBookChapter()
-    assert !bookChapterNoExist('Refinement of Concurrent Object Oriented Programs')
     to BookChapterPage
 }
 
@@ -200,25 +198,27 @@ When(~'I select the Book Chapter option at the program menu'){ ->
 
 Given(~'^the system has some book chapter entitled by "([^"]*)"$'){ String title ->
     BookChapterTestDataAndOperations.createBookChapter(title, "A.pdf")
-    BookChapterTestDataAndOperations.createBookChapter('Refinement of Concurrent Object Oriented Programs', "B.pdf")
+    BookChapterTestDataAndOperations.createBookChapter('Artificial Neural Networks', "B.pdf")
 
-    assert (!bookChapterNoExist(title) && !bookChapterNoExist('Refinement of Concurrent Object Oriented Programs'))
+    assert BookChapter.findByTitle(title) != null
+    assert BookChapter.findByTitle('Artificial Neural Networks') != null
 }
 
 When(~'^the system filter the book chapter entitled by title "([^"]*)"$') { String title ->
-    bookChapterFilter = BookChapterTestDataAndOperations.findBookChapterByTitle(title)
+    bookChapterFilter = BookChapter.findByTitle(title)
     BookChapterTestDataAndOperations.isFiltered(bookChapterFilter, title)
 }
 
 Then(~'^the system book chapter list content is not modified$'){->
     assert BookChapter.findAll().size() == 2
-    assert !bookChapterNoExist('Next Generation Software Product Line Engineering')
-    assert !bookChapterNoExist('Refinement of Concurrent Object Oriented Programs')
+
+    assert BookChapter.findByTitle('Next Generation Software Product Line Engineering') != null
+    assert BookChapter.findByTitle('Artificial Neural Networks') != null
 }
 
 When(~'^I select to view the list of book chapters$'){->
     at BookChapterPage
-    page.selectViewBookChapter()
+    page.selectViewBookChapter("Title")
 }
 
 And(~'^I select to filter the list of book chapter by title "([^"]*)"$'){ String title ->
