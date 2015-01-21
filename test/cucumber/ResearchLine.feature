@@ -46,17 +46,10 @@ Feature: research line
     When I click the edit button
     Then I can change the research line "Teoria da informacao - Complexidade no espaco" details
 
-  #if ($XMLImport)
-  @ignore
-  Scenario: upload research lines with a file
-    Given the system has some research line stored
-    When I upload new research lines from the file "testelattes2.xml"
-    Then the system has more research lines now
-
-  Scenario: upload research lines without a file
-    Given I am at the publications menu
-    When I select the "Linha de pesquisa" option at the program menu
-    And I select the upload button at the research line page
-    Then I'm still on the research line page
-    And an error message is showed at the research line page
-  #end
+  Scenario: search research line web
+    Given I am logged as admin
+    And the sustem has a research line
+    And I am at the publications menu
+    When I select the "Linha de pesquisa" option at the publications menu
+    Then I can visualize the research results
+    
