@@ -53,3 +53,15 @@ Feature: research line
     When I select the "Linha de pesquisa" option at the publications menu
     Then I can visualize the research results
     
+  Scenario: upload research line with a file
+    Given the system has some research line stored
+    When I upload a new reseach line "testelattes2.xml"
+    Then the system has more reseach lines now
+
+  Scenario: upload reseach lines with a file
+    Given I am at the publications menu
+    When I select the "Linha de pesquisa" option at the program menu
+    And I select the upload button at the research line page
+    Then I'm still on research line page
+    And an error message is showed at research line page
+  #end
