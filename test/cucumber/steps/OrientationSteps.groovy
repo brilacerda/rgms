@@ -71,6 +71,10 @@ When(~'^I fill the orientation title with "([^"]*)"$') { title ->
 
 private void fillOrientationWithTitleAndCreateThen(title) {
     page.fillOrientationDetails(title)
+    ShowListOrientation()
+}
+
+def ShowListOrientation() {
     page.selectCreateOrientation()
 
     at OrientationShowPage
@@ -78,7 +82,6 @@ private void fillOrientationWithTitleAndCreateThen(title) {
 
     at OrientationsPage
 }
-
 
 //edit web
 Given(~'^I am at the orientation page$') { ->
@@ -268,28 +271,25 @@ Then(~"^the system orientation list content is not modified\$"){->
 }
 
 And(~'^I create some orientation with type of "([^"]*)"$') {String tipo->
-    to OrientationsPage
-    page.selectNewOrientation()
-    at OrientationCreatePage
+    CreateOrientationPage()
     page.fillOrientationDetailsWithTipo("Modularity analysis of use case implementations", tipo)
 
-    page.selectCreateOrientation()
+    SelectAndCreateOrientation()
+    page.fillOrientationDetailsWithTipo('A theory of software product line refinement', tipo)
 
-    at OrientationShowPage
-    page.showList()
-    at OrientationsPage
+    ShowListOrientation()
+}
 
+def CreateOrientationPage() {
     to OrientationsPage
     page.selectNewOrientation()
     at OrientationCreatePage
-    page.fillOrientationDetailsWithTipo('A theory of software product line refinement', tipo)
+}
 
-    page.selectCreateOrientation()
+def SelectAndCreateOrientation() {
+    ShowListOrientation()
 
-    at OrientationShowPage
-    page.showList()
-
-    at OrientationsPage
+    CreateOrientationPage()
 }
 
 When(~'^I select to view the list of orientation column name "([^"]*)"$') {String column->
@@ -317,28 +317,13 @@ When(~'^the system filter the articles supervised by leader "([^"]*)"$'){ String
 }
 
 And(~'^I create some orientation supervised by "([^"]*)"$') {String leader->
-    to OrientationsPage
-    page.selectNewOrientation()
-    at OrientationCreatePage
+    CreateOrientationPage()
     page.fillOrientationDetailsWithOrientando("Modularity analysis of use case implementations", leader)
 
-    page.selectCreateOrientation()
-
-    at OrientationShowPage
-    page.showList()
-    at OrientationsPage
-
-    to OrientationsPage
-    page.selectNewOrientation()
-    at OrientationCreatePage
+    SelectAndCreateOrientation()
     page.fillOrientationDetailsWithOrientando('A theory of software product line refinement', leader)
 
-    page.selectCreateOrientation()
-
-    at OrientationShowPage
-    page.showList()
-
-    at OrientationsPage
+    ShowListOrientation()
 }
 
 And(~'^I select to filter the list of orientation by leader "([^"]*)"$') {String leader->

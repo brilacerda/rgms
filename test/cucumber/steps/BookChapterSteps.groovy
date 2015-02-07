@@ -66,12 +66,16 @@ And(~'^I create some book chapter entitled by "([^"]*)"$'){String title ->
     page.fillBookChapterDetails(title, BookChapterTestDataAndOperations.path() + 'A.pdf')
     page.selectCreateBookChapter()
 
-    to BookChapterPage
-    page.selectNewBookChapter()
-    at BookChapterCreatePage
+    selectNewBook()
     page.fillBookChapterDetails('Artificial Neural Networks', BookChapterTestDataAndOperations.path() + 'B.pdf')
     page.selectCreateBookChapter()
     to BookChapterPage
+}
+
+def selectNewBook() {
+    to BookChapterPage
+    page.selectNewBookChapter()
+    at BookChapterCreatePage
 }
 
 
@@ -105,6 +109,10 @@ Then(~'my book chapter list contains "([^"]*)"$') { String title ->
 And(~'^the book chapter "([^"]*)" with file name "([^"]*)" was created before$') { String title, filename ->
     page.selectNewBookChapter()
     to BookChapterCreatePage
+    atBookkChapterPage(title, filename)
+}
+
+def atBookkChapterPage(String title, filename) {
     at BookChapterCreatePage
     createAndCheckBookOnBrowser(title, filename)
     to BookChapterPage
@@ -121,22 +129,22 @@ private void checkIfBookIsOnListAtBookChapterPage(String title) {
 }
 
 When(~'^I go to new book chapter page$') { ->
-    to BookChapterPage
-    page.selectNewBookChapter()
-    at BookChapterCreatePage
+    selectNewBook()
 }
 And(~'^I use the webpage to create the book chapter "([^"]*)" with file name "([^"]*)"$') { String title, filename ->
-    at BookChapterCreatePage
-    createAndCheckBookOnBrowser(title, filename)
-    to BookChapterPage
-    at BookChapterPage
+    atBookkChapterPage(title, filename)
 }
 Then(~'^the book chapter "([^"]*)" was stored by the system$') { String title ->
-    book = BookChapter.findByTitle(title)
-    assert book != null
+    checkIsNotNull(title)
     to BookChapterPage
     at BookChapterPage
 }
+
+def checkIsNotNull(String title) {
+    book = BookChapter.findByTitle(title)
+    assert book != null
+}
+
 And(~'^it is shown in the book chapter list with title "([^"]*)"$') { String title ->
     to BookChapterPage
     at BookChapterPage
@@ -239,8 +247,7 @@ def bookChapterNoExist(String title){
 def createAndCheckBookOnBrowser(String title, String filename) {
     page.fillBookChapterDetails(title, filename)
     page.clickSaveBookChapter()
-    book = BookChapter.findByTitle(title)
-    assert book != null
+    checkIsNotNull(title)
 }
 
 def checkIfExists(String title) {
